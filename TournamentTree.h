@@ -56,7 +56,7 @@ int getMaxFromArray(std::list<TournamentNode*>& nodeList)
 	}
 }
 
-int* sortDataTournament(int* data, int dataAm)
+std::pair<int*, int> sortDataTournament(int* data, int dataAm)
 {
 	int* sortedData = new int[dataAm];
 	if (dataAm < 2)
@@ -65,13 +65,19 @@ int* sortDataTournament(int* data, int dataAm)
 		{
 			sortedData[i] = data[i];
 		}
-		return sortedData;
+		return std::pair<int*, int>(sortedData, 0);
 	}
 	std::list<TournamentNode*> nodeList = myCreateTreeTermLeaves(data, dataAm);
+
+
+	std::chrono::time_point<std::chrono::system_clock> start, end;
+	start = std::chrono::system_clock::now();
 	for (int i = 0; i < dataAm; i++)
 	{
 		int curMaxNum = getMaxFromArray(nodeList);
 		sortedData[dataAm - i - 1] = curMaxNum;
 	}
-	return sortedData;
+	end = std::chrono::system_clock::now();
+	int elapsedMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+	return std::pair<int*, int> (sortedData, elapsedMilliseconds);
 }
